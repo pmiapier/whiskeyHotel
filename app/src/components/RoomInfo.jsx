@@ -1,3 +1,4 @@
+import ImageGrid from "./ImageGrid";
 import RoomGrid from "./RoomGrid";
 
 export default function RoomInfo() {
@@ -9,7 +10,8 @@ export default function RoomInfo() {
           Three different room types to choose for your dream holiday
         </p>
       </div>
-      <div>
+      <div className="flex flex-col gap-2 py-20">
+        <ImageGrid />
         <RoomGrid />
       </div>
     </div>

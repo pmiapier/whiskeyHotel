@@ -1,4 +1,4 @@
-import Header from "../layout/Header";
+import Header from "./Header";
 
 export default function Hero() {
   return (
@@ -13,10 +13,3 @@ export default function Hero() {
     </div>
   );
 }
-
-//  <div className="bg-primaryPurple">
-//       <div>
-//         <Header />
-//       </div>
-//       <div>HERO SECTION IS HERE</div>
-//     </div>

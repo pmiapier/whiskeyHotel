@@ -2,7 +2,7 @@ import Button from "../components/Button";
 
 export default function Header() {
   return (
-    <header className="bg-primaryPurple p-4 text-black shadow-md">
+    <header className="bg-primaryPurple rounded-t-lg p-4 text-black shadow-md">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-semibold">WhiskeyHotel</div>
