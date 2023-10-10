@@ -1,15 +1,15 @@
-import Hero from '../components/Hero';
-import RoomGrid from '../components/RoomGrid';
-import InfoGrid from '../components/InfoGrid';
+import Hero from "../components/Hero";
 
+import InfoGrid from "../components/InfoGrid";
+import RoomInfo from "../components/RoomInfo";
 
 export default function Home() {
-    return (
-        <>
-            <Hero />
-            <RoomGrid />
-            <InfoGrid />
-            <h1>Hello</h1>
-        </>
-    )
+  return (
+    <>
+      <Hero />
+      <RoomInfo />
+      <InfoGrid />
+      <h1>Hello</h1>
+    </>
+  );
 }
