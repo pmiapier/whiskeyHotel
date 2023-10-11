@@ -1,5 +1,3 @@
-import Header from "./Header";
-
 export default function Hero() {
   return (
     <div className="bg-primaryPurple text-white py-24">

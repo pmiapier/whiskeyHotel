@@ -1,27 +1,12 @@
 import GridItemImage from "./GridItemImage";
-import catImage from "../assets/catImage/cat08.png";
-import catImage02 from "../assets/catImage/cat06.png";
-import catImage03 from "../assets/catImage/cat07.png";
-
-const array = [
-  {
-    bgcolor: "bg-gridPink",
-    catImg: catImage,
-  },
-  {
-    bgcolor: "bg-gridBlue",
-    catImg: catImage03,
-  },
-  {
-    bgcolor: "bg-gridGreen",
-    catImg: catImage02,
-  },
-];
+import { useGrid } from "../hooks/useGrid";
 
 export default function ImageGrid() {
+  const { gridImages } = useGrid();
+  
   return (
     <div className="grid grid-rows-1 grid-cols-3 gap-2 px-20">
-      {array.map((el) => {
+      {gridImages.map((el) => {
         return (
           <GridItemImage
             backgroundColor={el.bgcolor}

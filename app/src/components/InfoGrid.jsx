@@ -1,23 +1,12 @@
 import GridItemInfo from "./GridItemInfo";
-
-const array = [
-  {
-    color: "bg-gridGrey",
-    stepHeader: "BOOK A ROOM",
-  },
-  {
-    color: "bg-gridGrey",
-    stepHeader: "SUBMIT VACCINE CERTIFICATE",
-  },
-  {
-    color: "bg-gridGrey",
-    stepHeader: "CHECK IN",
-  },
-];
+import { useGrid } from "../hooks/useGrid";
 
 export default function InfoGrid() {
+  const { gridInformation } = useGrid();
+  
+  return (
   <div grid grid-rows-1 grid-cols-3 gap-2 px-20>
-    {array.map((el) => {
+    {gridInformation.map((el) => {
       return (
         <GridItemInfo
           color={el.color}
@@ -27,5 +16,6 @@ export default function InfoGrid() {
     })}
     <div>Hello</div>
     <div></div>
-  </div>;
+  </div>
+  );
 }
