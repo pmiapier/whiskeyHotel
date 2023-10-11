@@ -6,7 +6,7 @@ import catImage02 from "../assets/catImage/cat06.png";
 import catImage03 from "../assets/catImage/cat07.png";
 
 export const useGrid = () => {
-    const roomInformation = [
+  const roomInformation = [
     {
       background: "bg-gridYellow",
       roomImg: cozy,
@@ -18,7 +18,7 @@ export const useGrid = () => {
       background: "bg-gridMidnight",
       roomImg: chillout,
       roomType: "Chillout",
-      des: " It would be so chill for 3 there of us",
+      des: " It would be so chill for three of us there ",
       price: "500 baht/night",
     },
     {
@@ -32,16 +32,20 @@ export const useGrid = () => {
 
   const gridInformation = [
     {
-      color: "bg-gridGrey",
+      color: "bg-gridPastelPink",
       stepHeader: "BOOK A ROOM",
+      stepDescription:
+        "You can either check availible room online, give us a call or walk-in to book with us",
     },
     {
-      color: "bg-gridGrey",
+      color: "bg-gridPastelPink",
       stepHeader: "SUBMIT VACCINE CERTIFICATE",
+      stepDescription: "Providing us your feline vaccines record in advance",
     },
     {
-      color: "bg-gridGrey",
+      color: "bg-gridPastelPink",
       stepHeader: "CHECK IN",
+      stepDescription: "You can check-in from 9 o'clock ",
     },
   ];
 
@@ -60,9 +64,24 @@ export const useGrid = () => {
     },
   ];
 
-    return {
-        roomInformation,
-        gridInformation,
-        gridImages
-    }
-}
+  // const gridInformationDescription = [
+  //   {
+  //     color: "bg-gridPastelPink",
+  //     stepHeader: "BOOK A ROOM",
+  //   },
+  //   {
+  //     color: "bg-gridPastelPink",
+  //     stepHeader: "SUBMIT VACCINE CERTIFICATE",
+  //   },
+  //   {
+  //     color: "bg-gridPastelPink",
+  //     stepHeader: "CHECK IN",
+  //   },
+  // ];
+
+  return {
+    roomInformation,
+    gridInformation,
+    gridImages,
+  };
+};

@@ -12,6 +12,7 @@ export default {
         gridYellow: "#FFF4B7",
         gridMidnight: "#213239",
         gridGrey: "#ECECEC",
+        gridPastelPink: "#E5D4D4",
       },
     },
   },
