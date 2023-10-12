@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-footerMidnight p-4 text-white sticky bottom-0">
+    <footer className="bg-footerMidnight rounded-b-lg p-4 text-white bottom-0">
       <div className="container mx-auto text-center">
         <p className="mb-2">© 2023 WhiskeyHotel. All rights reserved.</p>
         <nav className="space-x-4">

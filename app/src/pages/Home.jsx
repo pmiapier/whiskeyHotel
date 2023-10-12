@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <div className="bg-black text-white text-center">
+      <div className="bg-black text-white text-center pb-40">
         <div className="pt-20">
           <h1 className="text-3xl font-bold">CHOOSE YOUR FAVORITE ROOM</h1>
           <p className="text-lg">

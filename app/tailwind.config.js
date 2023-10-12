@@ -13,6 +13,8 @@ export default {
         gridMidnight: "#213239",
         gridGrey: "#ECECEC",
         gridPastelPink: "#E5D4D4",
+        offWhite: "#FAF9F6",
+        greenPastel: "#78BFBC",
       },
     },
   },
