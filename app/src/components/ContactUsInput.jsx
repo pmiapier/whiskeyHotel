@@ -5,7 +5,7 @@ export default function ContactUsInput({ Icon, headline, text }) {
         <div>
           <Icon className="text-3xl" />
         </div>
-        <div className="text-3xl font-semibold">{headline}</div>
+        <div className="text-xl font-semibold">{headline}</div>
       </div>
       <div className="text-xl font-thin">{text}</div>
     </div>

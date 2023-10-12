@@ -3,7 +3,7 @@ export default function LoginInput({ type = "text", placeholder }) {
     <input
       type={type}
       placeholder={placeholder}
-      className="text-xl py-5 px-8 rounded-lg cursor-pointer"
+      className="text-sm py-3 px-8 rounded-lg cursor-pointer"
       style={{ width: "500px" }}
     />
   );

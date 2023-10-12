@@ -15,6 +15,8 @@ export default {
         gridPastelPink: "#E5D4D4",
         offWhite: "#FAF9F6",
         greenPastel: "#78BFBC",
+        purpleBlackground: "#B366FA",
+        purpleMD: "#CA9EF3",
       },
     },
   },

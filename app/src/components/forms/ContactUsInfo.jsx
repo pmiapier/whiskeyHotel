@@ -4,7 +4,7 @@ import ContactUsInput from "../ContactUsInput";
 
 export default function ContactUsInfo() {
   return (
-    <div className="flex flex-col gap-10 py-60">
+    <div className="flex flex-col gap-10 py-40">
       <ContactUsInput
         Icon={FaPhoneAlt}
         headline={"CALL US"}

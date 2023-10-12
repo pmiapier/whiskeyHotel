@@ -5,9 +5,11 @@ import { Outlet } from "react-router-dom";
 export default function Layout() {
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <div className="h-full">
+        <Header />
+        <Outlet />
+        <Footer />
+      </div>
     </>
   );
 }
