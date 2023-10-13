@@ -1,0 +1,38 @@
+// import FormButton from "../../components/forms/FormButton";
+
+import { Link } from "react-router-dom";
+
+export default function BookingDetails() {
+  return (
+    <div className="bg-white py-20 px-8 shadow-xl" style={{ width: "500px" }}>
+      <div className="text-center">
+        <div className="text-2xl font-bold">WHISKEY</div>
+        <div className="font-mono">CAT HOTEL</div>
+      </div>
+      <div className="py-10 grid grid-cols-1 gap-6 font-bold ">
+        <div className="grid gap-2">
+          <div>CHECK IN DATE</div>
+          <input
+            type="date"
+            className="bg-offWhite text-sm text-gray-500 py-3 px-8 rounded-lg cursor-pointer"
+          ></input>
+        </div>
+        <div className="grid gap-2">
+          <div>CHECK OUT DATE</div>
+          <input
+            type="date"
+            className="bg-offWhite text-sm text-gray-500  py-3 px-8 rounded-lg cursor-pointer"
+          ></input>
+        </div>
+      </div>
+      <div className="text-center py-10">
+        {/* <FormButton>CHECK AVAILABILITY</FormButton> */}
+        <Link to="/booking/availability">
+          <button className="bg-black py-3 px-10 rounded-lg text-xl font-normal text-white hover:bg-gridMidnight cursor-pointer">
+            CHECK AVAILABILITY
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+}

@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primaryPurple: "#E1CEF2",
+        primaryPurple: "#E1CEF2", //E1CEF2
         footerMidnight: "#213239",
         gridPink: "#FFE2F7",
         gridBlue: "#DDEEEE",

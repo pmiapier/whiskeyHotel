@@ -3,7 +3,7 @@ import LoginForm from "../components/forms/LoginForm";
 
 export default function Header() {
   return (
-    <header className="bg-purpleBlackground rounded-t-lg p-4 text-white shadow-md">
+    <header className="bg-primaryPurple rounded-t-lg p-10 text-black font-bold shadow-md">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-semibold">
@@ -12,16 +12,16 @@ export default function Header() {
             </a>
           </div>
           <nav className="space-x-4">
-            <a href="/" className=" hover:text-gridYellow ">
+            <a href="/" className=" hover:text-purpleBlackground ">
               HOME
             </a>
-            <a href="/booking" className="hover:underline">
+            <a href="/user/booking" className="hover:text-purpleBlackground ">
               MY BOOKING
             </a>
-            <a href="/contact" className="hover:underline">
+            <a href="/contact" className="hover:text-purpleBlackground ">
               CONTACT US
             </a>
-            <a href="/login" className="hover:underline    ">
+            <a href="/login" className="hover:text-purpleBlackground">
               <Button>LOGIN</Button>
             </a>
           </nav>
