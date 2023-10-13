@@ -15,11 +15,11 @@ export default function Header() {
             <a href="/" className=" hover:text-purpleBlackground ">
               HOME
             </a>
-            <a href="/user/booking" className="hover:text-purpleBlackground ">
-              MY BOOKING
-            </a>
             <a href="/contact" className="hover:text-purpleBlackground ">
               CONTACT US
+            </a>
+            <a href="/login" className="hover:text-purpleBlackground ">
+              <Button>BOOK NOW</Button>
             </a>
             <a href="/login" className="hover:text-purpleBlackground">
               <Button>LOGIN</Button>

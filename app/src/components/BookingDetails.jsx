@@ -1,7 +1,7 @@
 // import FormButton from "../../components/forms/FormButton";
 
 import { Link } from "react-router-dom";
-import catImg from "../../assets/catImage/cat07.png";
+import catImg from "../assets/catImage/cat07.png";
 
 export default function BookingDetails() {
   return (

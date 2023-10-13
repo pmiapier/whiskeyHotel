@@ -1,6 +1,6 @@
-import cozy from "../../assets/roomType/cozy.jpg";
-import chillout from "../../assets/roomType/chillout.jpg";
-import party from "../../assets/roomType/party.jpg";
+import cozy from "../assets/roomType/cozy.jpg";
+import chillout from "../assets/roomType/chillout.jpg";
+import party from "../assets/roomType/party.jpg";
 
 export default function BookingImages() {
   return (

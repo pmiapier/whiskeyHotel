@@ -64,24 +64,25 @@ export const useGrid = () => {
     },
   ];
 
-  // const gridInformationDescription = [
-  //   {
-  //     color: "bg-gridPastelPink",
-  //     stepHeader: "BOOK A ROOM",
-  //   },
-  //   {
-  //     color: "bg-gridPastelPink",
-  //     stepHeader: "SUBMIT VACCINE CERTIFICATE",
-  //   },
-  //   {
-  //     color: "bg-gridPastelPink",
-  //     stepHeader: "CHECK IN",
-  //   },
-  // ];
+  const roomAvailability = [
+    {
+      backgroundColor: "bg-gridMidnight",
+      roomImage: cozy,
+    },
+    {
+      backgroundColor: "bg-gridMidnight",
+      roomImage: chillout,
+    },
+    {
+      backgroundColor: "bg-gridMidnight",
+      roomImage: party,
+    },
+  ];
 
   return {
     roomInformation,
     gridInformation,
     gridImages,
+    roomAvailability,
   };
 };
