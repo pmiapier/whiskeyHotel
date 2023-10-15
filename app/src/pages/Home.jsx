@@ -18,10 +18,9 @@ export default function Home() {
         <div className="flex flex-col gap-10 py-10">
           <ImageGrid />
           <RoomGrid />
-          <div className="flex justify-end px-40 py-10 text-purpleBlackground text-2xl font-bold hover:underline cursor-pointer">
+          <a href="/dashboard" className="flex justify-end px-40 py-10 text-purpleBlackground text-2xl font-bold hover:underline cursor-pointer">
             <div>BOOK NOW</div>
-            {/* <div className="bg-white">{FaArrowUpRightFromSquare}</div> */}
-          </div>
+          </a>
         </div>
       </div>
       <div className="bg-offWhite">

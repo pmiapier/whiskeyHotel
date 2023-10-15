@@ -3,16 +3,15 @@ import AvailabilityImages from "./AvailabilityImages";
 
 export default function RoomAvailabilityGrid() {
   const { roomAvailability } = useGrid();
-
   return (
     <div>
       {roomAvailability.map((el) => {
-        return (
-          <AvailabilityImages>
+        return(
+          <AvailabilityImages
             backgroundColor={el.backgroundColor}
-            roomImage={el.roomImage}
+            roomImage={el.roomImage}>
           </AvailabilityImages>
-        );
+        )
       })}
     </div>
   );
