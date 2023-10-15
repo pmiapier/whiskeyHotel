@@ -6,6 +6,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Booking from "../pages/users/Booking";
 import Availability from "../pages/users/Availability";
+import RedirectIfAuthenticated from "../components/forms/RedirectIfAuthenticated";
+import Authenticated from "../components/Authenticated";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +16,25 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <Home /> },
       { path: "/contact", element: <Contact /> },
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "/user", element: <Home /> },
-      { path: "/login/user", element: <Booking /> },
-      { path: "/login/user/booking", element: <Availability /> },
+      { path: "/login", element: (
+        <RedirectIfAuthenticated>
+         <Login />
+        </RedirectIfAuthenticated>
+      ) },
+      { path: "/register", element:
+      (
+        <RedirectIfAuthenticated>
+          <Register />
+        </RedirectIfAuthenticated>
+      )
+     },
+      // { path: "/user", element: <Home /> },
+      { path: "/dashboard", element: (
+        <Authenticated>
+          <Booking />
+        </Authenticated>
+      ) },
+      { path: "/dashboard/booking", element: <Availability /> },
     ],
   },
 

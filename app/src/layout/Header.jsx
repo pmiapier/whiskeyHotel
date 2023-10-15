@@ -1,7 +1,36 @@
 import Button from "../components/forms/Button";
-import LoginForm from "../components/forms/LoginForm";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Header() {
+  const { logout, authUser } = useAuth(); // global state
+  const isAuth = authUser ? true : false;
+
+  const loginOrLogout = isAuth ? (
+    <a className="hover:text-purpleBlackground">
+      <Button onClick={logout}>LOGOUT</Button>
+    </a>
+  ) : (
+    <a href="/login" className="hover:text-purpleBlackground">
+      <Button>LOGIN</Button>
+    </a>
+  );
+
+  const manageBookings = isAuth ? (
+    <a href="/dashboard/booking" className="hover:text-purpleBlackground ">
+      <Button>MANAGE BOOKINGS</Button>
+    </a>
+  ) : (
+    ""
+  );
+
+  const adminDashboard = isAuth && authUser.role === "ADMIN" ? (
+    <a href="/admin/" className="hover:text-purpleBlackground ">
+      <Button>ADMIN</Button>
+    </a>
+  ) : (
+    ""
+  );
+
   return (
     <header className="bg-primaryPurple rounded-t-lg p-10 text-black font-bold shadow-md">
       <div className="container mx-auto">
@@ -18,12 +47,12 @@ export default function Header() {
             <a href="/contact" className="hover:text-purpleBlackground ">
               CONTACT US
             </a>
-            <a href="/login" className="hover:text-purpleBlackground ">
+            <a href="/dashboard" className="hover:text-purpleBlackground ">
               <Button>BOOK NOW</Button>
             </a>
-            <a href="/login" className="hover:text-purpleBlackground">
-              <Button>LOGIN</Button>
-            </a>
+            {manageBookings}
+            {adminDashboard}
+            {loginOrLogout}
           </nav>
         </div>
       </div>
