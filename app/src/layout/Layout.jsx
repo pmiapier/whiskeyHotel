@@ -1,13 +1,15 @@
-import Footer from './Footer';
-import Header from './Header';
-import { Outlet } from 'react-router-dom';
+import Footer from "./Footer";
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
 export default function Layout() {
-    return (
-      <>
+  return (
+    <>
+      <div className="h-full">
         <Header />
-            <Outlet />
+        <Outlet />
         <Footer />
-      </>
-    );
-  }
+      </div>
+    </>
+  );
+}

@@ -1,3 +1,12 @@
+import BookingDetails from "../../components/BookingDetails";
+import BookingImages from "../../components/BookingImages";
+
 export default function Booking() {
-  return <div>Booking</div>;
+  return (
+    <div className="flex justify-center gap-20 bg-offWhite py-40">
+      <BookingDetails />
+
+      <BookingImages />
+    </div>
+  );
 }
