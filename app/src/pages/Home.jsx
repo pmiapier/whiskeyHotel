@@ -2,8 +2,12 @@ import Hero from "../components/Hero";
 import InfoGrid from "../components/InfoGrid";
 import ImageGrid from "../components/ImageGrid";
 import RoomGrid from "../components/RoomGrid";
+import { useGrid } from "../hooks/useGrid";
+
 
 export default function Home() {
+  const { roomGridInformation, otherGridInformation  } = useGrid();
+
   return (
     <>
       <Hero />
@@ -16,7 +20,8 @@ export default function Home() {
         </div>
         <div className="flex flex-col gap-2 py-20">
           <ImageGrid />
-          <RoomGrid />
+          <RoomGrid roomInformation={roomGridInformation}/>
+          <RoomGrid roomInformation={otherGridInformation}/>
         </div>
       </div>
       <InfoGrid />

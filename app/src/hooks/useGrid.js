@@ -30,7 +30,7 @@ export const useGrid = () => {
     },
   ];
 
-  const gridInformation = [
+  const roomGridInformation = [
     {
       color: "bg-gridGrey",
       stepHeader: "BOOK A ROOM",
@@ -60,9 +60,34 @@ export const useGrid = () => {
     },
   ];
 
+  const otherGridInformation = [
+    {
+      background: "bg-gridYellow",
+      roomImg: cozy,
+      roomType: "Cozy",
+      des: " I think it will be super cozy for two of us",
+      price: "300 baht/night",
+    },
+    {
+      background: "bg-gridMidnight",
+      roomImg: chillout,
+      roomType: "Chillout",
+      des: " It would be so chill for 3 there of us",
+      price: "500 baht/night",
+    },
+    {
+      background: "bg-gridGrey",
+      roomImg: party,
+      roomType: "Party",
+      des: "Let's have a party, there are more of us now ",
+      price: "700 baht/night",
+    },
+  ];
+
     return {
         roomInformation,
-        gridInformation,
+        roomGridInformation,
+        otherGridInformation,
         gridImages
     }
 }
