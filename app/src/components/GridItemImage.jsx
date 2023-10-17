@@ -1,11 +1,11 @@
 export default function GridItemImage({ backgroundColor, catImage }) {
   return (
-    <div
-      className={`${backgroundColor} flex flex-col items-center gap-6 rounded-lg`}
-    >
-      <div className="w-24 h-52 flex items-center ">
+    <div className={`${backgroundColor} grid grid-cols-3 gap-6 rounded-lg`}>
+      <div></div>
+      <div className="flex py-16">
         <img src={catImage} />
       </div>
+      <div></div>
     </div>
   );
 }

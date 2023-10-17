@@ -1,4 +1,9 @@
-export default function LoginInput({ type = "text", placeholder, value, onChange }) {
+export default function LoginInput({
+  type = "text",
+  placeholder,
+  value,
+  onChange,
+}) {
   return (
     <input
       type={type}
