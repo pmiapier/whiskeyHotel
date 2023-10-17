@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node ./prisma/seed.js"
+    "seed-admin": "node ./prisma/seed_admin.js",
+    "seed-rooms": "node ./prisma/seed_rooms.js"
   },
   "keywords": [],
   "author": "",
