@@ -1,4 +1,4 @@
-import Button from "../components/forms/Button";
+import ButtonForHeader from "../components/forms/ButtonForHeader";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Header() {
@@ -7,11 +7,11 @@ export default function Header() {
 
   const loginOrLogout = isAuth ? (
     <a className="hover:text-purpleBlackground">
-      <Button onClick={logout}>LOGOUT</Button>
+      <ButtonForHeader onClick={logout}>LOGOUT</ButtonForHeader>
     </a>
   ) : (
     <a href="/login" className="hover:text-purpleBlackground">
-      <Button>LOGIN</Button>
+      <ButtonForHeader>LOGIN</ButtonForHeader>
     </a>
   );
 
@@ -20,7 +20,7 @@ export default function Header() {
       href="/dashboard/managebooking"
       className="hover:text-purpleBlackground "
     >
-      <Button>MANAGE BOOKINGS</Button>
+      <ButtonForHeader>MANAGE BOOKINGS</ButtonForHeader>
     </a>
   ) : (
     ""
@@ -29,7 +29,7 @@ export default function Header() {
   const adminDashboard =
     isAuth && authUser.role === "ADMIN" ? (
       <a href="/admin/" className="hover:text-purpleBlackground ">
-        <Button>ADMIN</Button>
+        <ButtonForHeader>ADMIN</ButtonForHeader>
       </a>
     ) : (
       ""
@@ -52,7 +52,7 @@ export default function Header() {
               CONTACT US
             </a>
             <a href="/dashboard" className="hover:text-purpleBlackground ">
-              <Button>BOOK NOW</Button>
+              <ButtonForHeader>BOOK NOW</ButtonForHeader>
             </a>
             {manageBookings}
             {adminDashboard}

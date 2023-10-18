@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const cozyImage = require("../");
 
 const roomData = [
   {
@@ -22,8 +23,7 @@ const roomData = [
     type: "Party",
     isMaintaining: false,
   },
-]
-
+];
 
 prisma.room
   .createMany({
