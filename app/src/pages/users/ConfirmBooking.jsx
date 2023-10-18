@@ -7,20 +7,28 @@ import Party from "../../components/roomTypes/Party";
 import { useGrid } from "../../hooks/useGrid";
 
 export default function ConfirmBooking() {
+    // Get the current URL
+  const url = new URL(window.location.href);
+
+  // Get the value of the 'room' parameter
+  const roomType = url.searchParams.get('room');
+  const checkinDate = url.searchParams.get('checkinDate');
+  const checkoutDate = url.searchParams.get('checkoutDate');
   return (
     <div className="bg-offWhite flex flex-col items-center py-10">
       <div className="flex gap-10 justify-around items-center p-10">
         <div className="bg-white rounded-lg shadow-lg">
-          <ConfirmBookingDetails text={"CHECK IN"} dateOrNumber="2023-10-17" />
+          <ConfirmBookingDetails text={"CHECK IN"} dateOrNumber={checkinDate} />
           <ConfirmBookingDetails
             text={"CHECK OUT "}
-            dateOrNumber="2023-10-20"
+            dateOrNumber={checkoutDate}
           />
           <ConfirmBookingDetails text={"TOTAL STAYING "} dateOrNumber="3" />
           {/* totalSatying = checkout - checkin */}
         </div>
         <div>
-          <Cozy />
+          {roomType === "COZY" ? (  <Cozy />) : roomType === "CHILLOUT" ? (  <Chillout />) : (  <Party />)}
+
           {/* <Chillout /> */}
           {/* <Party /> */}
         </div>

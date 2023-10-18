@@ -1,7 +1,10 @@
 import AvailableRoomCard from "./AvailableRoomCard";
 import { useGrid } from "../hooks/useGrid";
 
-export default function AvailableRoomList() {
+export default function AvailableRoomList({
+  checkinDate,
+  checkoutDate
+}) {
   const { roomAvailability } = useGrid();
   // console.log(roomAvailability);
   return (
@@ -12,6 +15,8 @@ export default function AvailableRoomList() {
           roomType={el.roomType}
           pricePerNight={el.pricePerNight}
           maxCapacity={el.maxCapacity}
+          checkinDate={checkinDate}
+          checkoutDate={checkoutDate}
         ></AvailableRoomCard>
       ))}
     </div>

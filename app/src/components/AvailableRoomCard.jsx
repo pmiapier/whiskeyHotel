@@ -5,6 +5,8 @@ export default function AvailableRoomCard({
   roomType,
   pricePerNight,
   maxCapacity,
+  checkinDate,
+  checkoutDate,
 }) {
   // console.log("1", roomImage);
   return (
@@ -17,7 +19,7 @@ export default function AvailableRoomCard({
         <div> Price : {pricePerNight} /night</div>
         <div> Max Guests : {maxCapacity}</div>
         <div className=" py-5">
-          <a href="/dashboard/confirmbooking">
+          <a href={`/dashboard/confirmbooking?room=${roomType}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`}>
             <Button>RESERVE THIS ROOM</Button>
           </a>
         </div>
