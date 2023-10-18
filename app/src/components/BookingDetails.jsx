@@ -5,6 +5,8 @@ import catImg from "../assets/catImage/cat07.png";
 import AvailableRoomList from "./AvailableRoomList";
 import { useState } from "react";
 
+
+
 export default function BookingDetails() {
   const [checkinDate, setCheckinDate] = useState();
   const [checkoutDate, setCheckoutDate] = useState();
@@ -50,7 +52,7 @@ export default function BookingDetails() {
         </div>
       </div>
       <div>
-        <AvailableRoomList />
+        <AvailableRoomList checkinDate={checkinDate} checkoutDate={checkoutDate} />
       </div>
     </>
   );
