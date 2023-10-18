@@ -6,7 +6,8 @@ import AvailableRoomList from "./AvailableRoomList";
 import { useState } from "react";
 
 export default function BookingDetails() {
-  const [dateInput, setDateInput] = useState();
+  const [checkinDate, setCheckinDate] = useState();
+  const [checkoutDate, setCheckoutDate] = useState();
   return (
     <>
       <div className="bg-white py-20 px-8 shadow-xl" style={{ width: "500px" }}>
@@ -19,7 +20,8 @@ export default function BookingDetails() {
             <div className="pl-2">CHECK IN DATE</div>
             <input
               onChange={(e) => {
-                console.log(e.target.value);
+                // console.log(new Date(e.target.value));
+                setCheckinDate(new Date(e.target.value));
               }}
               type="date"
               className="bg-offWhite text-sm text-gray-500 py-3 px-8 rounded-lg cursor-pointer"
@@ -28,6 +30,11 @@ export default function BookingDetails() {
           <div className="grid gap-2">
             <div className="pl-2">CHECK OUT DATE</div>
             <input
+              onChange={(e) => {
+                // console.log(new Date(e.target.value));
+                //setCheckoutDate(new Date(e.target.value).toUTCString());
+                setCheckoutDate(new Date(e.target.value));
+              }}
               type="date"
               className="bg-offWhite text-sm text-gray-500  py-3 px-8 rounded-lg cursor-pointer"
             ></input>

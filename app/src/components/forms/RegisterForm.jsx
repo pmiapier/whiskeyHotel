@@ -3,9 +3,39 @@ import FormButton from "./FormButton";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { toast } from 'react-toastify';
+import InputErrorMessage from './InputErrorMessage';
+import Joi from 'joi';
+
+const registerSchema = Joi.object({
+  first_name: Joi.string().trim().required(),
+  last_name: Joi.string().trim().required(),
+  email: Joi.string().email({ tlds: false }).required(),
+  password: Joi.string()
+    .pattern(/^[a-zA-Z0-9]{6,30}$/)
+    .trim()
+    .required(),
+    // declare custom error message
+  confirmPassword: Joi.string().valid(Joi.ref('password')).trim().required().messages({
+    'any.only': 'Password does not match'
+  })
+});
+
+const validateRegister = (input) => {
+  const { error } = registerSchema.validate(input, { abortEarly: false });
+  if (error) {
+    const result = error.details.reduce((acc, el) => {
+      const { message, path } = el;
+      acc[path[0]] = message;
+      return acc;
+    }, {});
+    return result;
+  }
+};
 
 export default function RegisterForm() {
   const { register } = useAuth();
+  const [error, setError] = useState({});
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -17,7 +47,14 @@ export default function RegisterForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    register(formData);
+    const validationError = validateRegister(formData);
+    if (validationError) {
+      return setError(validationError);
+    }
+    setError({})
+    register(formData).catch(err => {
+      toast.error(err.response?.data.message);
+    });
   };
 
   return (
@@ -34,7 +71,9 @@ export default function RegisterForm() {
         onChange={(e) =>
           setFormData({ ...formData, first_name: e.target.value })
         }
+        hasError={error.first_name}
       />
+      {error.first_name && <InputErrorMessage message={error.first_name} />}
       <RegisterInput
         placeholder="Last Name"
         name="lastName"
@@ -42,18 +81,24 @@ export default function RegisterForm() {
         onChange={(e) =>
           setFormData({ ...formData, last_name: e.target.value })
         }
+        hasError={error.last_name}
       />
+      {error.last_name && <InputErrorMessage message={error.last_name} />}
       <RegisterInput
         placeholder="Email address"
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        hasError={error.email}
       />
+      {error.email && <InputErrorMessage message={error.email} />}
       <RegisterInput
         placeholder="Password"
         type="password"
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        hasError={error.password}
       />
+      {error.password && <InputErrorMessage message={error.password} />}
       <RegisterInput
         placeholder="Confirm Password"
         type="password"
@@ -61,7 +106,9 @@ export default function RegisterForm() {
         onChange={(e) =>
           setFormData({ ...formData, confirmPassword: e.target.value })
         }
+        hasError={error.confirmPassword}
       />
+      {error.confirmPassword && <InputErrorMessage message={error.confirmPassword} />}
       <FormButton>SIGN UP</FormButton>
       <h3 className="text-xl">Already have an account?</h3>
       <h5 className="text-xl text-greenPastel hover:underline cursor-pointer">

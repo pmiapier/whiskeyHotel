@@ -16,13 +16,9 @@ export default function LoginForm() {
   const submitLogin = (e) => {
     e.preventDefault();
     login(formData)
-      // .then((res) => {
-      //   console.log(res);
-      // })
       .catch((err) => {
         console.log(err);
-        toast(err.response.data.message);
-        // alert(err.response.data.message);
+        toast.error(err.response.data.message);
       });
   };
 
