@@ -1,14 +1,6 @@
-import Button from "./Button";
-
-export default function AvailableRoomCard({
-  roomImage,
-  roomType,
-  pricePerNight,
-  maxCapacity,
-}) {
-  // console.log("1", roomImage);
+export default function RoomTypeDetails() {
   return (
-    <div className="bg-gridMidnight flex rounded-lg">
+    <div>
       <div>
         <img src={roomImage} className="w-96 h-96 "></img>
       </div>
@@ -16,11 +8,6 @@ export default function AvailableRoomCard({
         <div className="text-2xl font-bold tracking-wider">{roomType}</div>
         <div> Price : {pricePerNight} /night</div>
         <div> Max Guests : {maxCapacity}</div>
-        <div className=" py-5">
-          <a href="/dashboard/confirmbooking">
-            <Button>RESERVE THIS ROOM</Button>
-          </a>
-        </div>
       </div>
     </div>
   );

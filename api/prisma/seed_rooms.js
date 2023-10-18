@@ -22,8 +22,7 @@ const roomData = [
     type: "Party",
     isMaintaining: false,
   },
-]
-
+];
 
 prisma.room
   .createMany({
