@@ -17,6 +17,6 @@ Located in `./api`
 
 `pnpm install`
 
-`pnpm seed` *(This only needs to be ran once, to seed the admin user)*
+`pnpm seed-admin && pnpm seed-rooms` *(This only needs to be ran once, to seed the admin user)*
 
 `pnpm run dev`

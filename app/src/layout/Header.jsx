@@ -15,7 +15,7 @@ export default function Header() {
     </a>
   );
 
-  const manageBookings = isAuth ? (
+  const manageBookings = isAuth && authUser.role !== "ADMIN" ? (
     <a
       href="/dashboard/managebooking"
       className="hover:text-purpleBlackground "
@@ -29,11 +29,17 @@ export default function Header() {
   const adminDashboard =
     isAuth && authUser.role === "ADMIN" ? (
       <a href="/admin/" className="hover:text-purpleBlackground ">
-        <ButtonForHeader>ADMIN</ButtonForHeader>
+        <ButtonForHeader>MANAGE BOOKINGS</ButtonForHeader>
       </a>
     ) : (
       ""
     );
+
+  const adminStatus = isAuth && authUser.role === "ADMIN" ? (
+      <span className="text-red-500 text-xl">ADMIN</span>
+  ) : (
+    ""
+  );
 
   return (
     <header className="bg-primaryPurple rounded-t-lg p-10 text-black font-bold shadow-md">
@@ -57,6 +63,7 @@ export default function Header() {
             {manageBookings}
             {adminDashboard}
             {loginOrLogout}
+            {adminStatus}
           </nav>
         </div>
       </div>

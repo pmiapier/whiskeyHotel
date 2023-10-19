@@ -5,9 +5,6 @@ const createError = require('../utils/create-error');
 const prisma = require('../models/prisma');
 
 exports.createReservation = async (req, res, next) => {
-    // Probably need to get the user ID from session, too (done)
-    // If room is already booked for those dates -> fail (done)
-    // If room isMaintaining -> fail (done)
     if (!req.user) {
       res.status(401).json("unauthenticated");
       return {}
@@ -20,6 +17,13 @@ exports.createReservation = async (req, res, next) => {
           return next(error);
         }
 
+        roomIds = await getAvailableRoomsByRoomType(value.room_type, value.check_in_date, value.check_out_date);
+        if (roomIds.length === 0) {
+          return next(createError('no rooms available for those dates', 400));
+        }
+
+        value.room_id = roomIds[0].id; // pick the first room available for this room type
+
         const reservations = await checkReservationsByDateAndRoomID(value);
 
         if (reservations.length > 0) {
@@ -31,6 +35,7 @@ exports.createReservation = async (req, res, next) => {
           return next(createError('room is under maintenance', 400));
         }
 
+        delete value.room_type;
         const reservation = await prisma.reservation.create({
           data: value
         });
@@ -40,6 +45,7 @@ exports.createReservation = async (req, res, next) => {
         next(err);
       }
 }
+
 
 // Check to see if a room is available for a given date range
 exports.checkRoomAvailability = async (req, res, next) => {
@@ -120,6 +126,63 @@ exports.updateRoomMaintaining = async (req, res, next) => {
     next(err);
   }
 }
+// Should return all rooms that are available between a given date range
+// Note: Rooms that are inMaintenance should not be available
+// Example:
+// {
+//   rooms: {
+//     cozy: 2,
+//     chillout: 2,
+//     party: 1
+//   }
+exports.getRoomsAvailable = async (req, res, next) => {
+  // Check for user authentication
+  if (!req.user) {
+    return res.status(401).json({ message: "unauthenticated" });
+  }
+
+  try {
+    // Validate request body
+    const { value, error } = getReservationSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+
+    // Retrieve reservations and all rooms
+    const reservations = await checkAllReservationsByDate(value);
+    const rooms = await prisma.room.findMany();
+
+    // Initialize available rooms count by type
+    const roomsAvailable = {
+      Cozy: 0,
+      Chillout: 0,
+      Party: 0
+    };
+
+    // Count rooms that are not under maintenance
+    rooms.forEach(room => {
+      if (!room.isMaintaining) {
+        roomsAvailable[room.type]++;
+      }
+    });
+
+    reservations.forEach(reservation => {
+      // Find the associated room for the reservation using room_id
+      const associatedRoom = rooms.find(room => room.id === reservation.room_id);
+
+      if (associatedRoom && !associatedRoom.isMaintaining) {
+          roomsAvailable[associatedRoom.type]--;
+      }
+    });
+
+
+    // Respond with available rooms count
+    res.status(200).json({ roomsAvailable });
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 // getUserReservations
 
@@ -142,6 +205,51 @@ const checkReservationsByDateAndRoomID = async (value) => {
   });
   return reservations;
 }
+
+const getRoomsByRoomType = async (type) => {
+  const rooms = await prisma.room.findMany({
+    where: {
+      type: type
+    }
+  });
+  return rooms;
+}
+
+const getAvailableRoomsByRoomType = async (type, checkInDate, checkOutDate) => {
+  // 1. Fetch all rooms of a given type.
+  const allRoomsOfType = await prisma.room.findMany({
+    where: {
+      type: type,
+      isMaintaining: false
+    }
+  });
+
+  // 2. Fetch all reservations for the given date range.
+  const reservations = await prisma.reservation.findMany({
+    where: {
+      AND: [
+        {
+          check_in_date: {
+            lte: checkOutDate
+          }
+        },
+        {
+          check_out_date: {
+            gte: checkInDate
+          }
+        }
+      ]
+    }
+  });
+
+  const reservedRoomIds = reservations.map(r => r.room_id);
+
+  // 3. Filter out rooms that are reserved.
+  const availableRooms = allRoomsOfType.filter(room => !reservedRoomIds.includes(room.id));
+
+  return availableRooms;
+}
+
 
 const checkAllReservationsByDate = async (value) => {
   const reservations = await prisma.reservation.findMany({

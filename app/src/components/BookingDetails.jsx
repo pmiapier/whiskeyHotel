@@ -3,18 +3,23 @@
 import { Link } from "react-router-dom";
 import catImg from "../assets/catImage/cat07.png";
 import AvailableRoomList from "./AvailableRoomList";
-import { useState } from "react";
-
-
+import { useReservation } from "../hooks/useReservation";
 
 export default function BookingDetails() {
-  const [checkinDate, setCheckinDate] = useState();
-  const [checkoutDate, setCheckoutDate] = useState();
+  const {
+    checkinDate,
+    setCheckinDate,
+    checkoutDate,
+    setCheckoutDate,
+    roomsAvailable,
+    getRoomAvailability,
+  } = useReservation();
+
   return (
     <>
       <div className="bg-white py-20 px-8 shadow-xl" style={{ width: "500px" }}>
         <div className="text-center">
-          <div className="text-2xl font-bold">WHISKEY</div>
+          <div className="text-2xl font-bold">WHISKEY</div>{" "}
           <div className="font-mono">CAT HOTEL</div>
         </div>
         <div className="py-10 grid grid-cols-1 gap-6 font-bold ">
@@ -22,8 +27,9 @@ export default function BookingDetails() {
             <div className="pl-2">CHECK IN DATE</div>
             <input
               onChange={(e) => {
-                // console.log(new Date(e.target.value));
-                setCheckinDate(new Date(e.target.value));
+                let date = new Date(e.target.value);
+                let formattedDate = date.toISOString().slice(0, 10);
+                setCheckinDate(formattedDate);
               }}
               type="date"
               className="bg-offWhite text-sm text-gray-500 py-3 px-8 rounded-lg cursor-pointer"
@@ -33,9 +39,9 @@ export default function BookingDetails() {
             <div className="pl-2">CHECK OUT DATE</div>
             <input
               onChange={(e) => {
-                // console.log(new Date(e.target.value));
-                //setCheckoutDate(new Date(e.target.value).toUTCString());
-                setCheckoutDate(new Date(e.target.value));
+                let date = new Date(e.target.value);
+                let formattedDate = date.toISOString().slice(0, 10);
+                setCheckoutDate(formattedDate);
               }}
               type="date"
               className="bg-offWhite text-sm text-gray-500  py-3 px-8 rounded-lg cursor-pointer"
@@ -43,7 +49,12 @@ export default function BookingDetails() {
           </div>
         </div>
         <div className="text-center py-10">
-          <button className="bg-black py-3 px-10 rounded-lg text-xl font-normal text-white tracking-wider hover:bg-gridMidnight cursor-pointer">
+          <button
+            className="bg-black py-3 px-10 rounded-lg text-xl font-normal text-white tracking-wider hover:bg-gridMidnight cursor-pointer"
+            onClick={() => {
+              getRoomAvailability();
+            }}
+          >
             CHECK AVAILABILITY
           </button>
           <div className="flex justify-center pt-20">
@@ -52,7 +63,11 @@ export default function BookingDetails() {
         </div>
       </div>
       <div>
-        <AvailableRoomList checkinDate={checkinDate} checkoutDate={checkoutDate} />
+        <AvailableRoomList
+          checkinDate={checkinDate}
+          checkoutDate={checkoutDate}
+          roomsAvailable={roomsAvailable}
+        />
       </div>
     </>
   );
