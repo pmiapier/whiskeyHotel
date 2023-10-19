@@ -1,7 +1,8 @@
 const Joi = require('joi');
 
 const reservationSchema = Joi.object({
-  room_id: Joi.number().integer().positive().required(),
+  room_id: Joi.number().integer().positive(),
+  room_type: Joi.string(),
   check_in_date: Joi.date(),
   check_out_date: Joi.date()
 });

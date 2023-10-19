@@ -67,19 +67,19 @@ export const useGrid = () => {
   const roomAvailability = [
     {
       roomImage: cozy,
-      roomType: "COZY",
+      roomType: "Cozy",
       pricePerNight: "300",
       maxCapacity: "2",
     },
     {
       roomImage: chillout,
-      roomType: "CHILLOUT",
+      roomType: "Chillout",
       pricePerNight: "500",
       maxCapacity: "3",
     },
     {
       roomImage: party,
-      roomType: "PARTY",
+      roomType: "Party",
       pricePerNight: "700",
       maxCapacity: "8",
     },

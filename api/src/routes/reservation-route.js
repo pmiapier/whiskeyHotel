@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/create-reservation', authenticateMiddleware, reservationController.createReservation)
 router.post('/update-room-maintaining', authenticateMiddleware, reservationController.updateRoomMaintaining)
 router.get('/check-room-availability', authenticateMiddleware, reservationController.checkRoomAvailability)
+router.post('/get-room-availability', authenticateMiddleware, reservationController.getRoomsAvailable)
 router.get('/get-reservations', authenticateMiddleware, reservationController.getAllReservations)
 
 module.exports = router;
