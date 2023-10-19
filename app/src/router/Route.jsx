@@ -10,6 +10,7 @@ import RedirectIfAuthenticated from "../components/forms/RedirectIfAuthenticated
 import Authenticated from "../components/Authenticated";
 import ManageBooking from "../pages/users/ManageBooking";
 import ConfirmBooking from "../pages/users/ConfirmBooking";
+import AdminManageBooking from "../pages/admins/AdminManageBooking";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       },
       { path: "/dashboard/managebooking", element: <ManageBooking /> },
       { path: "/dashboard/confirmbooking", element: <ConfirmBooking /> },
+      { path: "/admin", element: <AdminManageBooking /> },
     ],
   },
 
