@@ -26,6 +26,17 @@ export function useReservation() {
       console.log(res.data)
     }
 
+    const changeReservation = async (roomType, checkinDate, checkoutDate, reservationID) => {
+      const reservationData = {
+        room_type: roomType,
+        check_in_date: checkinDate,
+        check_out_date: checkoutDate,
+        id: reservationID,
+      };
+      const res = await axios.post('/reservation/change-reservation', reservationData);
+      console.log(res.data)
+    }
+
     return {
       checkinDate,
       setCheckinDate,
@@ -34,5 +45,6 @@ export function useReservation() {
       roomsAvailable,
       getRoomAvailability,
       reserveRoom,
+      changeReservation,
     }
 }

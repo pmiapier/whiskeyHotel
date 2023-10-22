@@ -7,6 +7,7 @@ export default function AvailableRoomCard({
   maxCapacity,
   checkinDate,
   checkoutDate,
+  changeReservationId,
 }) {
   // console.log("1", roomImage);
   return (
@@ -19,9 +20,19 @@ export default function AvailableRoomCard({
         <div> Price : {pricePerNight} /night</div>
         <div> Max Guests : {maxCapacity}</div>
         <div className=" py-5">
-          <a href={`/dashboard/confirmbooking?room=${roomType}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`}>
-            <Button>RESERVE THIS ROOM</Button>
-          </a>
+          {changeReservationId ? (
+            <a
+              href={`/dashboard/confirmbooking?room=${roomType}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&changeReservationId=${changeReservationId}`}
+            >
+              <Button>CHANGE RESERVATION</Button>
+            </a>
+          ) : (
+            <a
+              href={`/dashboard/confirmbooking?room=${roomType}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`}
+            >
+              <Button>RESERVE THIS ROOM</Button>
+            </a>
+          )}
         </div>
       </div>
     </div>

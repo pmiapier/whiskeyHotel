@@ -4,22 +4,12 @@ import ConfirmBookingDetails from "../../components/ComfirmBookingDetails";
 import Chillout from "../../components/roomTypes/Chillout";
 import Cozy from "../../components/roomTypes/Cozy";
 import Party from "../../components/roomTypes/Party";
-import { useGrid } from "../../hooks/useGrid";
 import { useReservation } from "../../hooks/useReservation";
 import { toast } from "react-toastify";
-import {useNavigate,redirect, Navigate } from "react-router-dom"
-import { useState } from "react";
-
-
+import { useNavigate } from "react-router-dom";
 
 export default function ConfirmBooking() {
-  const { reserveRoom } = useReservation();
-  // const [navivate, setNavigate] = useState(false)
-  // const handleSubmit = () => {}
-  
-  // redirect tp the /dashboard/managebooking page
-  const navigate = useNavigate()
- 
+  const { reserveRoom, changeReservation } = useReservation();
 
   // Get the current URL
   const url = new URL(window.location.href);
@@ -28,7 +18,9 @@ export default function ConfirmBooking() {
   const roomType = url.searchParams.get("room");
   const checkinDate = url.searchParams.get("checkinDate");
   const checkoutDate = url.searchParams.get("checkoutDate");
+  const changeReservationId = url.searchParams.get("changeReservationId");
   const totalStay = (new Date(checkoutDate) - new Date(checkinDate)) / 86400000; // in day format - divide by milleseconds in a day
+  const navigate = useNavigate();
   return (
     <div className="bg-offWhite flex flex-col items-center py-10">
       <div className="flex gap-10 justify-around items-center p-10">
@@ -42,7 +34,6 @@ export default function ConfirmBooking() {
             text={"TOTAL STAYING "}
             dateOrNumber={totalStay}
           />
-          {/* totalSatying = checkout - checkin */}
         </div>
         <div>
           {roomType === "Cozy" ? (
@@ -52,21 +43,35 @@ export default function ConfirmBooking() {
           ) : (
             <Party />
           )}
-
-          {/* <Chillout /> */}
-          {/* <Party /> */}
         </div>
       </div>
       <div>
-        <Button
-          onClick={async () => {
-         await reserveRoom(roomType, checkinDate, checkoutDate);
-            toast.success('Your room is now successfully reserved!');
-          // <Navigate to = "/dashboard/managebooking"/>
-          }}
-        >
-          CONFIRM BOOKING
-        </Button>
+        {changeReservationId ? (
+          <Button
+            onClick={async () => {
+              await changeReservation(
+                roomType,
+                checkinDate,
+                checkoutDate,
+                changeReservationId
+              );
+              toast.success("Your room is now successfully rebooked!");
+              navigate("/dashboard/managebooking");
+            }}
+          >
+            CHANGE BOOKING
+          </Button>
+        ) : (
+          <Button
+            onClick={async () => {
+              await reserveRoom(roomType, checkinDate, checkoutDate);
+              toast.success("Your room is now successfully reserved!");
+              navigate("/dashboard/managebooking");
+            }}
+          >
+            CONFIRM BOOKING
+          </Button>
+        )}
       </div>
     </div>
   );
