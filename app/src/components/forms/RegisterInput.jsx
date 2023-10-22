@@ -18,6 +18,8 @@ export default function RegisterInput({
       name={name}
       onChange={onChange}
       value={value}
+      
+
     />
   );
 }

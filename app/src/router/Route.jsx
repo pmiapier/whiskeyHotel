@@ -50,15 +50,16 @@ const router = createBrowserRouter([
     ],
   },
 
-  // {
-  //   path: "/user",
-  //   element: <Layout />,
-  //   children: [
-
-  //   ],
-  // },
 ]);
 
 export default function Route() {
   return <RouterProvider router={router} />;
 }
+
+// {
+//   path: "/user",
+//   element: <Layout />,
+//   children: [
+
+//   ],
+// },

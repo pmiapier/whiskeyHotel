@@ -12,7 +12,7 @@ function App() {
     <div className="px-20">
       <Route />
       <ToastContainer
-        position="bottom-center"
+        position="top-center"
         autoClose={3000}
         theme="colored"
       />

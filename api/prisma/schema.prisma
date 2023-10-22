@@ -11,32 +11,32 @@ datasource db {
 }
 
 model Reservation {
-  id            Int      @id @default(autoincrement())
-  user_id       Int
-  room_id       Int
-  check_in_date DateTime
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  room_id        Int
+  check_in_date  DateTime
   check_out_date DateTime
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-  user          User     @relation(fields: [user_id], references: [id])
-  room          Room     @relation(fields: [room_id], references: [id])
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  user           User     @relation(fields: [user_id], references: [id])
+  room           Room     @relation(fields: [room_id], references: [id])
 }
 
 model Room {
-  id           Int           @id @default(autoincrement())
-  type         String
+  id            Int           @id @default(autoincrement())
+  type          String
   isMaintaining Boolean
-  reservations Reservation[]
+  reservations  Reservation[]
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
-  first_name  String
-  last_name   String
-  password    String
-  email       String       @unique
+  id           Int           @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  password     String
+  email        String        @unique
   phone_number String?
-  role        UserRole     @default(USER)
+  role         UserRole      @default(USER)
   reservations Reservation[]
 }
 

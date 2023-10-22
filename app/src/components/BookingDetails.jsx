@@ -1,9 +1,10 @@
-// import FormButton from "../../components/forms/FormButton";
+
 
 import { Link } from "react-router-dom";
 import catImg from "../assets/catImage/cat07.png";
 import AvailableRoomList from "./AvailableRoomList";
 import { useReservation } from "../hooks/useReservation";
+import { toast } from "react-toastify";
 
 export default function BookingDetails() {
   const {
@@ -14,6 +15,7 @@ export default function BookingDetails() {
     roomsAvailable,
     getRoomAvailability,
   } = useReservation();
+
 
   return (
     <>
@@ -32,6 +34,8 @@ export default function BookingDetails() {
                 setCheckinDate(formattedDate);
               }}
               type="date"
+              // required
+
               className="bg-offWhite text-sm text-gray-500 py-3 px-8 rounded-lg cursor-pointer"
             ></input>
           </div>
@@ -44,6 +48,7 @@ export default function BookingDetails() {
                 setCheckoutDate(formattedDate);
               }}
               type="date"
+              // required
               className="bg-offWhite text-sm text-gray-500  py-3 px-8 rounded-lg cursor-pointer"
             ></input>
           </div>
@@ -51,9 +56,14 @@ export default function BookingDetails() {
         <div className="text-center py-10">
           <button
             className="bg-black py-3 px-10 rounded-lg text-xl font-normal text-white tracking-wider hover:bg-gridMidnight cursor-pointer"
-            onClick={() => {
-              getRoomAvailability();
+            onClick={ async () => {
+              await getRoomAvailability()
+              if (roomsAvailable === 0){
+                toast.error('Sorry, no room available for the selection dates.')
+              }
             }}
+            // implement try, catch to fix the problem
+          
           >
             CHECK AVAILABILITY
           </button>

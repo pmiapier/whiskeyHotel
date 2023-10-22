@@ -6,9 +6,20 @@ import Cozy from "../../components/roomTypes/Cozy";
 import Party from "../../components/roomTypes/Party";
 import { useGrid } from "../../hooks/useGrid";
 import { useReservation } from "../../hooks/useReservation";
+import { toast } from "react-toastify";
+import {useNavigate,redirect, Navigate } from "react-router-dom"
+import { useState } from "react";
+
+
 
 export default function ConfirmBooking() {
   const { reserveRoom } = useReservation();
+  // const [navivate, setNavigate] = useState(false)
+  // const handleSubmit = () => {}
+  
+  // redirect tp the /dashboard/managebooking page
+  const navigate = useNavigate()
+ 
 
   // Get the current URL
   const url = new URL(window.location.href);
@@ -48,8 +59,10 @@ export default function ConfirmBooking() {
       </div>
       <div>
         <Button
-          onClick={() => {
-            reserveRoom(roomType, checkinDate, checkoutDate);
+          onClick={async () => {
+         await reserveRoom(roomType, checkinDate, checkoutDate);
+            toast.success('Your room is now successfully reserved!');
+          // <Navigate to = "/dashboard/managebooking"/>
           }}
         >
           CONFIRM BOOKING

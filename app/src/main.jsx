@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import AuthContextProvider from "./contexts/AuthContext.jsx";
 import "./index.css";
 
+
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   <AuthContextProvider>
@@ -13,4 +15,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   // </React.StrictMode>,
 );
 
-// \check Toast at Fackbook Main
+
