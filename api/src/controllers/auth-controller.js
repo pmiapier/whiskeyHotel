@@ -1,8 +1,8 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { registerSchema, loginSchema } = require('../validators/auth-validator');
-const prisma = require('../models/prisma');
-const createError = require('../utils/create-error');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { registerSchema, loginSchema } = require("../validators/auth-validator");
+const prisma = require("../models/prisma");
+const createError = require("../utils/create-error");
 
 exports.register = async (req, res, next) => {
   try {
@@ -12,14 +12,14 @@ exports.register = async (req, res, next) => {
     }
     value.password = await bcrypt.hash(value.password, 12);
     const user = await prisma.user.create({
-      data: value
+      data: value,
     });
     const payload = { userId: user.id };
     const accessToken = jwt.sign(
       payload,
-      process.env.JWT_SECRET_KEY || '1q2w3e4r5t6y7u8i9o0p',
+      process.env.JWT_SECRET_KEY || "1q2w3e4r5t6y7u8i9o0p",
       {
-        expiresIn: process.env.JWT_EXPIRE
+        expiresIn: process.env.JWT_EXPIRE,
       }
     );
     delete user.password;
@@ -39,25 +39,25 @@ exports.login = async (req, res, next) => {
 
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email: value.email }]
-      }
+        OR: [{ email: value.email }],
+      },
     });
 
     if (!user) {
-      return next(createError('invalid credential', 400));
+      return next(createError("invalid credential", 400));
     }
 
     const isMatch = await bcrypt.compare(value.password, user.password);
     if (!isMatch) {
-      return next(createError('invalid credential', 400));
+      return next(createError("invalid credential", 400));
     }
 
     const payload = { userId: user.id };
     const accessToken = jwt.sign(
       payload,
-      process.env.JWT_SECRET_KEY || '1q2w3e4r5t6y7u8i9o0p',
+      process.env.JWT_SECRET_KEY || "1q2w3e4r5t6y7u8i9o0p",
       {
-        expiresIn: process.env.JWT_EXPIRE
+        expiresIn: process.env.JWT_EXPIRE,
       }
     );
     delete user.password;

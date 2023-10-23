@@ -5,6 +5,7 @@ import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Booking from "../pages/users/Booking";
+import ChangeDates from "../pages/users/ChangeDates";
 // import Availability from "../pages/users/Availability";
 import RedirectIfAuthenticated from "../components/forms/RedirectIfAuthenticated";
 import Authenticated from "../components/Authenticated";
@@ -44,21 +45,29 @@ const router = createBrowserRouter([
           </Authenticated>
         ),
       },
+      {
+        path: "changeDates",
+        element: (
+          <Authenticated>
+            <ChangeDates />
+          </Authenticated>
+        ),
+      },
       { path: "/dashboard/managebooking", element: <ManageBooking /> },
       { path: "/dashboard/confirmbooking", element: <ConfirmBooking /> },
       { path: "/admin", element: <AdminManageBooking /> },
     ],
   },
-
-  // {
-  //   path: "/user",
-  //   element: <Layout />,
-  //   children: [
-
-  //   ],
-  // },
 ]);
 
 export default function Route() {
   return <RouterProvider router={router} />;
 }
+
+// {
+//   path: "/user",
+//   element: <Layout />,
+//   children: [
+
+//   ],
+// },
