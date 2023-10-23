@@ -31,8 +31,6 @@ export default function BookingDetails({ id = null }) {
   if (id && firstLoad) {
     ///get-reservation-id
     axios.get(`/reservation/get-reservation-id?id=${id}`).then((res) => {
-      console.log(res.data);
-      console.log("checkin date", res.data.reservation.check_in_date);
       setCheckinDate(formatDate(res.data.reservation.check_in_date));
       setCheckoutDate(formatDate(res.data.reservation.check_out_date));
       setChangeReservationId(id);

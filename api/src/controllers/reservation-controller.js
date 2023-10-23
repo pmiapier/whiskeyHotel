@@ -25,6 +25,7 @@ exports.createReservation = async (req, res, next) => {
       value.check_in_date,
       value.check_out_date
     );
+
     if (roomIds.length === 0) {
       return next(createError("no rooms available for those dates", 400));
     }
@@ -53,45 +54,83 @@ exports.createReservation = async (req, res, next) => {
   }
 };
 
-// Check to see if a room is available for a given date range
-exports.checkRoomAvailability = async (req, res, next) => {
+
+exports.changeReservation = async (req, res, next) => {
   if (!req.user) {
     res.status(401).json("unauthenticated");
     return {};
   }
   try {
     const { value, error } = reservationSchema.validate(req.body);
+    value.user_id = req.user.id;
+
     if (error) {
       return next(error);
     }
+
+    roomIds = await getAvailableRoomsByRoomType(
+      value.room_type,
+      value.check_in_date,
+      value.check_out_date
+    );
+    if (roomIds.length === 0) {
+      return next(createError("no rooms available for those dates", 400));
+    }
+
+    value.room_id = roomIds[0].id; // pick the first room available for this room type
+
     const reservations = await checkReservationsByDateAndRoomID(value);
-    res.status(200).json({ available: reservations.length === 0 });
+
+    if (reservations.length > 0) {
+      return next(createError("room is already booked for those dates", 400));
+    }
+
+    const isMaintaining = await isRoomMaintaining(value);
+    if (isMaintaining) {
+      return next(createError("room is under maintenance", 400));
+    }
+
+    delete value.room_type;
+    const reservation = await prisma.reservation.update({
+      data: value,
+      where: {
+        id: value.id,
+        user_id: value.user_id,
+      },
+    });
+
+    res.status(201).json({ reservation });
   } catch (err) {
     next(err);
   }
 };
 
-// Get all room availabilities for a given date range
-// exports.getAllRoomAvailabilities = async (req, res, next) => {
-//   if (!req.user) {
-//     res.status(401).json("unauthenticated");
-//     return {}
-//   }
-//   try {
-//     const { value, error } = getReservationSchema.validate(req.body);
-//     if (error) {
-//       return next(error);
-//     }
-//     const reservations = await checkAllReservationsByDate(value);
 
-//     res.status(200).json({ reservations });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
+exports.cancelReservation = async (req, res, next) => {
+  if (!req.user) {
+    res.status(401).json("unauthenticated");
+    return {};
+  }
+  try {
+    const { value, error } = reservationSchema.validate(req.body);
+    value.user_id = req.user.id;
 
-// This will probably be in admin-controller eventually
-// We will have a seperate endpoint for checking to see if a room is available
+    if (error) {
+      return next(error);
+    }
+
+    const reservation = await prisma.reservation.delete({
+      where: {
+        id: value.id,
+        user_id: value.user_id,
+      },
+    });
+
+    res.status(201).json({ reservation });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.getAllReservations = async (req, res, next) => {
   if (!req.user) {
@@ -109,6 +148,38 @@ exports.getAllReservations = async (req, res, next) => {
     next(err);
   }
 };
+exports.getReservationsByUser = async (req, res, next) => {
+  if (!req.user) {
+    res.status(401).json("unauthenticated");
+    return;
+  }
+  try {
+    const reservations = await prisma.reservation.findMany({
+      where: {
+        user_id: req.user.id,
+      },
+    });
+
+    const enhancedReservations = await Promise.all(
+      reservations.map(async (reservation) => {
+        // get roomType from room_id
+        const room = await prisma.room.findFirst({
+          where: {
+            id: reservation.room_id,
+          },
+        });
+        return {
+          ...reservation,
+          room_type: room?.type,  // Use optional chaining in case room is undefined
+        };
+      })
+    );
+
+    res.status(200).json({ reservations: enhancedReservations });
+  } catch (err) {
+    next(err);
+  }
+}
 
 // This should be in admin-controller eventually
 exports.updateRoomMaintaining = async (req, res, next) => {
@@ -133,6 +204,25 @@ exports.updateRoomMaintaining = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getReservationById = async (req, res, next) => {
+  if (!req.user) {
+    res.status(401).json("unauthenticated");
+    return {};
+  }
+  try {
+    const reservation = await prisma.reservation.findFirst({
+      where: {
+        id: req.params.id,
+        user_id: req.user.id,
+      },
+    });
+    res.status(200).json({ reservation });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Should return all rooms that are available between a given date range
 // Note: Rooms that are inMaintenance should not be available
 // Example:
@@ -142,6 +232,7 @@ exports.updateRoomMaintaining = async (req, res, next) => {
 //     chillout: 2,
 //     party: 1
 //   }
+
 exports.getRoomsAvailable = async (req, res, next) => {
   // Check for user authentication
   if (!req.user) {
@@ -210,14 +301,6 @@ const checkReservationsByDateAndRoomID = async (value) => {
   return reservations;
 };
 
-const getRoomsByRoomType = async (type) => {
-  const rooms = await prisma.room.findMany({
-    where: {
-      type: type,
-    },
-  });
-  return rooms;
-};
 
 const getAvailableRoomsByRoomType = async (type, checkInDate, checkOutDate) => {
   // 1. Fetch all rooms of a given type.
