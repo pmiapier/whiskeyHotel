@@ -131,7 +131,7 @@ exports.cancelReservation = async (req, res, next) => {
 };
 
 exports.cancelReservationAdmin = async (req, res, next) => {
-  if (!req.user) {
+  if (!req.user && !req.user === "ADMIN") {
     res.status(401).json("unauthenticated");
     return {};
   }
