@@ -54,7 +54,6 @@ exports.createReservation = async (req, res, next) => {
   }
 };
 
-
 exports.changeReservation = async (req, res, next) => {
   if (!req.user) {
     res.status(401).json("unauthenticated");
@@ -105,7 +104,6 @@ exports.changeReservation = async (req, res, next) => {
   }
 };
 
-
 exports.cancelReservation = async (req, res, next) => {
   if (!req.user) {
     res.status(401).json("unauthenticated");
@@ -118,7 +116,7 @@ exports.cancelReservation = async (req, res, next) => {
     if (error) {
       return next(error);
     }
-
+    console.log(value);
     const reservation = await prisma.reservation.delete({
       where: {
         id: value.id,
@@ -132,8 +130,54 @@ exports.cancelReservation = async (req, res, next) => {
   }
 };
 
+exports.cancelReservationAdmin = async (req, res, next) => {
+  if (!req.user && !req.user === "ADMIN") {
+    res.status(401).json("unauthenticated");
+    return {};
+  }
+  try {
+    delete req.body.user;
+    delete req.body.room;
+    const { value, error } = reservationSchema.validate(req.body);
+    value.user_id = req.user.id;
+
+    if (error) {
+      return next(error);
+    }
+    console.log(value);
+    const reservation = await prisma.reservation.delete({
+      where: {
+        id: value.id,
+      },
+    });
+
+    res.status(201).json({ reservation });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAllReservations = async (value) => {
+  const reservations = await prisma.reservation.findMany({
+    include: {
+      user: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+      room: {
+        select: {
+          type: true,
+        },
+      },
+    },
+  });
+  return reservations;
+};
+
 exports.getAllReservations = async (req, res, next) => {
-  if (!req.user) {
+  if (!req.user && !req.user === "ADMIN") {
     res.status(401).json("unauthenticated");
     return {};
   }
@@ -142,12 +186,13 @@ exports.getAllReservations = async (req, res, next) => {
     if (error) {
       return next(error);
     }
-    const reservations = await checkAllReservationsByDate(value);
+    const reservations = await getAllReservations(value);
     res.status(200).json({ reservations });
   } catch (err) {
     next(err);
   }
 };
+
 exports.getReservationsByUser = async (req, res, next) => {
   if (!req.user) {
     res.status(401).json("unauthenticated");
@@ -170,7 +215,7 @@ exports.getReservationsByUser = async (req, res, next) => {
         });
         return {
           ...reservation,
-          room_type: room?.type,  // Use optional chaining in case room is undefined
+          room_type: room?.type, // Use optional chaining in case room is undefined
         };
       })
     );
@@ -179,7 +224,7 @@ exports.getReservationsByUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 // This should be in admin-controller eventually
 exports.updateRoomMaintaining = async (req, res, next) => {
@@ -300,7 +345,6 @@ const checkReservationsByDateAndRoomID = async (value) => {
   });
   return reservations;
 };
-
 
 const getAvailableRoomsByRoomType = async (type, checkInDate, checkOutDate) => {
   // 1. Fetch all rooms of a given type.
