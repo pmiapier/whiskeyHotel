@@ -14,7 +14,8 @@ exports.reservationSchema = reservationSchema;
 
 const getReservationSchema = Joi.object({
   check_in_date: Joi.date(),
-  check_out_date: Joi.date()
+  check_out_date: Joi.date(),
+  reservation_id: Joi.number().integer() 
 });
 
 exports.getReservationSchema = getReservationSchema;

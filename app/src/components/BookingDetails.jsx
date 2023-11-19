@@ -23,6 +23,7 @@ export default function BookingDetails({ id = null }) {
     setCheckoutDate,
     roomsAvailable,
     getRoomAvailability,
+    setReservationID,
   } = useReservation();
 
   const [changeReservationId, setChangeReservationId] = useState();
@@ -34,6 +35,7 @@ export default function BookingDetails({ id = null }) {
       setCheckinDate(formatDate(res.data.reservation.check_in_date));
       setCheckoutDate(formatDate(res.data.reservation.check_out_date));
       setChangeReservationId(id);
+      setReservationID(id);
       setFirstLoad(false);
     }, []);
   }
