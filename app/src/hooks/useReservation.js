@@ -6,11 +6,13 @@ export function useReservation() {
   const [checkoutDate, setCheckoutDate] = useState();
   const [roomsAvailable, setRoomsAvailable] = useState({});
   const [reservations, setReservations] = useState([]);
+  const [reservationID, setReservationID] = useState();
 
   const getRoomAvailability = async () => {
     const reservationData = {
       check_in_date: checkinDate,
       check_out_date: checkoutDate,
+      reservation_id: reservationID,
     };
     const res = await axios.post(
       "/reservation/get-room-availability",
@@ -68,5 +70,6 @@ export function useReservation() {
     changeReservation,
     // getAllReservations,
     reservations,
+    setReservationID,
   };
 }

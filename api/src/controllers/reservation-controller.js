@@ -70,7 +70,8 @@ exports.changeReservation = async (req, res, next) => {
     roomIds = await getAvailableRoomsByRoomType(
       value.room_type,
       value.check_in_date,
-      value.check_out_date
+      value.check_out_date,
+      value.id
     );
     if (roomIds.length === 0) {
       return next(createError("no rooms available for those dates", 400));
@@ -278,6 +279,10 @@ exports.getReservationById = async (req, res, next) => {
 //     party: 1
 //   }
 
+function isDateOverlap(newBookingStart, newBookingEnd, reservationStart, reservationEnd) {
+  return newBookingStart <= reservationEnd && newBookingEnd >= reservationStart;
+}
+
 exports.getRoomsAvailable = async (req, res, next) => {
   // Check for user authentication
   if (!req.user) {
@@ -285,24 +290,20 @@ exports.getRoomsAvailable = async (req, res, next) => {
   }
 
   try {
-    // Validate request body
     const { value, error } = getReservationSchema.validate(req.body);
     if (error) {
       return next(error);
     }
 
-    // Retrieve reservations and all rooms
     const reservations = await checkAllReservationsByDate(value);
     const rooms = await prisma.room.findMany();
 
-    // Initialize available rooms count by type
     const roomsAvailable = {
       Cozy: 0,
       Chillout: 0,
       Party: 0,
     };
 
-    // Count rooms that are not under maintenance
     rooms.forEach((room) => {
       if (!room.isMaintaining) {
         roomsAvailable[room.type]++;
@@ -310,17 +311,15 @@ exports.getRoomsAvailable = async (req, res, next) => {
     });
 
     reservations.forEach((reservation) => {
-      // Find the associated room for the reservation using room_id
       const associatedRoom = rooms.find(
         (room) => room.id === reservation.room_id
       );
 
       if (associatedRoom && !associatedRoom.isMaintaining) {
-        roomsAvailable[associatedRoom.type]--;
+          roomsAvailable[associatedRoom.type]--;
       }
     });
 
-    // Respond with available rooms count
     res.status(200).json({ roomsAvailable });
   } catch (err) {
     next(err);
@@ -332,21 +331,41 @@ exports.getRoomsAvailable = async (req, res, next) => {
 // getReservationsByAdmin
 
 const checkReservationsByDateAndRoomID = async (value) => {
+  let queryConditions = {
+    AND: [
+      {
+        check_in_date: {
+          gte: value.check_in_date,
+        },
+      },
+      {
+        check_out_date: {
+          lte: value.check_out_date,
+        },
+      },
+      {
+        room_id: value.room_id,
+      },
+    ],
+  };
+
+  if (value.id) {
+    queryConditions.AND.push({
+      id: {
+        not: value.id,
+      },
+    });
+  }
+
   const reservations = await prisma.reservation.findMany({
-    where: {
-      check_in_date: {
-        gte: value.check_in_date,
-      },
-      check_out_date: {
-        lte: value.check_out_date,
-      },
-      room_id: value.room_id,
-    },
+    where: queryConditions,
   });
+
   return reservations;
 };
 
-const getAvailableRoomsByRoomType = async (type, checkInDate, checkOutDate) => {
+
+const getAvailableRoomsByRoomType = async (type, checkInDate, checkOutDate, reservationID) => {
   // 1. Fetch all rooms of a given type.
   const allRoomsOfType = await prisma.room.findMany({
     where: {
@@ -355,45 +374,83 @@ const getAvailableRoomsByRoomType = async (type, checkInDate, checkOutDate) => {
     },
   });
 
-  // 2. Fetch all reservations for the given date range.
+
+  let reservedRoomIdToExclude = null;
+  if (reservationID) {
+    const reservationToExclude = await prisma.reservation.findUnique({
+      where: { id: reservationID },
+    });
+    reservedRoomIdToExclude = reservationToExclude ? reservationToExclude.room_id : null;
+  }
+
+  // 2. Fetch all reservations for the given date range, excluding the room of the specified reservation ID.
+  let queryConditions = {
+    AND: [
+      {
+        check_in_date: {
+          lte: checkOutDate,
+        },
+      },
+      {
+        check_out_date: {
+          gte: checkInDate,
+        },
+      },
+    ],
+  };
+
+  // Add condition to exclude the specific room if reservationID is provided
+  if (reservedRoomIdToExclude) {
+    queryConditions.AND.push({
+      id: {
+        not: reservedRoomIdToExclude,
+      },
+    });
+  }
+
   const reservations = await prisma.reservation.findMany({
-    where: {
-      AND: [
-        {
-          check_in_date: {
-            lte: checkOutDate,
-          },
-        },
-        {
-          check_out_date: {
-            gte: checkInDate,
-          },
-        },
-      ],
-    },
+    where: queryConditions,
   });
 
   const reservedRoomIds = reservations.map((r) => r.room_id);
 
-  // 3. Filter out rooms that are reserved.
+  // 3. Filter out rooms that are reserved, but include the room associated with the provided reservationID.
   const availableRooms = allRoomsOfType.filter(
-    (room) => !reservedRoomIds.includes(room.id)
+    (room) => !reservedRoomIds.includes(room.id) || room.id === reservedRoomIdToExclude
   );
 
   return availableRooms;
 };
 
+
 const checkAllReservationsByDate = async (value) => {
+  let queryConditions = {
+    AND: [
+      {
+        check_in_date: {
+          lte: value.check_out_date,
+        },
+      },
+      {
+        check_out_date: {
+          gte: value.check_in_date,
+        },
+      },
+    ],
+  };
+
+  if (value.reservation_id) {
+    queryConditions.AND.push({
+      id: {
+        not: value.reservation_id,
+      },
+    });
+  }
+
   const reservations = await prisma.reservation.findMany({
-    where: {
-      check_in_date: {
-        gte: value.check_in_date,
-      },
-      check_out_date: {
-        lte: value.check_out_date,
-      },
-    },
+    where: queryConditions,
   });
+
   return reservations;
 };
 
