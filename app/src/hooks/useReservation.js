@@ -1,5 +1,5 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 
 export function useReservation() {
   const [checkinDate, setCheckinDate] = useState();
@@ -15,7 +15,7 @@ export function useReservation() {
       reservation_id: reservationID,
     };
     const res = await axios.post(
-      "/reservation/get-room-availability",
+      '/reservation/get-room-availability',
       reservationData
     );
     setRoomsAvailable(res.data.roomsAvailable);
@@ -28,7 +28,7 @@ export function useReservation() {
       check_out_date: checkoutDate,
     };
     const res = await axios.post(
-      "/reservation/create-reservation",
+      '/reservation/create-reservation',
       reservationData
     );
     console.log(res.data);
@@ -47,17 +47,11 @@ export function useReservation() {
       id: reservationID,
     };
     const res = await axios.post(
-      "/reservation/change-reservation",
+      '/reservation/change-reservation',
       reservationData
     );
     console.log(res.data);
   };
-
-  // const getAllReservations = async () => {
-  //   const res = await axios.get("reservation/get-all-reservations");
-  //   console.log(res.data);
-  //   setReservations(res.data);
-  // };
 
   return {
     checkinDate,
